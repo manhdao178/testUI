@@ -1,10 +1,11 @@
 import React from "react";
 import Icons from "../icons";
 import ImgConnectUni from "../../assets/images/iconConnectWallet.png";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const renderExtraMintKey = () => {
     return (
       <div className="px-2 py-[2px]  absolute right-0 -top-1 text-[11px] bg-gradient-to-br from-yellow-400 to-red-600 rounded">
@@ -35,17 +36,17 @@ const Header = () => {
     },
     {
       name: "Swap",
-      path: "/",
+      path: "/1",
     },
     {
       name: "Explorer",
-      path: "/",
+      path: "/2",
       disable: true,
       extra: renderExtraExplorer,
     },
     {
       name: "Bridge",
-      path: "/",
+      path: "/3",
       disable: true,
       extra: renderExtraExplorer,
     },
@@ -60,19 +61,25 @@ const Header = () => {
           </div>
           <div className="link flex items-center">
             {listLink.map((item, idx) => {
+              const isActive = pathname === item.path;
               return (
-                <div
+                <button
                   key={idx}
                   className={`relative cursor-pointer ${
                     item.disable && "opacity-75"
                   }`}
                   onClick={() => navigate(item.path)}
+                  disabled={item.disable}
                 >
-                  <div className="px-6 py-[10px] text-[15px] font-medium">
+                  <div
+                    className={`px-6 py-[10px] text-[15px]  font-medium ${
+                      isActive && "text-[#FDC60B]"
+                    }`}
+                  >
                     {item.name}
                   </div>
                   {item?.extra && item.extra()}
-                </div>
+                </button>
               );
             })}
           </div>
